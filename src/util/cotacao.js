@@ -9,7 +9,7 @@ const cotacao = (symbol, callback) => {
     request({ url: url, json: true }, (err, response) => {
         if (err) {
             callback({
-                message: `Something went wrong: ${err}`,
+                message: err,
                 code : 500
             }, undefined);
         }
@@ -22,10 +22,10 @@ const cotacao = (symbol, callback) => {
         }
 
         const parsedJSON = response.body.data[0];
+        console.log(parsedJSON);
+        const { symbol, name, currency, price_open, price, day_high, day_low } = parsedJSON
 
-        const { symbol, price_open, price, day_high, day_low } = parsedJSON
-
-        const data = { symbol, price_open, price, day_high, day_low }
+        const data = { symbol, name, currency, price_open, price, day_high, day_low }
 
         callback(undefined, data);
     })

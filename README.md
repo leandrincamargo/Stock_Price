@@ -1,8 +1,8 @@
-# Projeto cotações
+# Stock Price Project
 
-## Para executar configure as dependências
+## Configure the dependencies to execute
 
 `npm i`
 
-## Depois
+## After
 `npm start`
