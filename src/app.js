@@ -78,6 +78,8 @@ app.get('*', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('Servidor está rodando na porta 3000');
+const porta = process.env.PORT || 3000;
+
+app.listen(porta, () => {
+    console.log(`Servidor está rodando na porta ${porta}`);
 });
