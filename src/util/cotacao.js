@@ -1,10 +1,9 @@
 const request = require('request')
 
-const api_token = 'UnWKQPMQtxr0pby8OejtkO1B6H90YjVXuvqYK0aPTRaQc3JkLEgcruGDtUDC'
+const api_token = '146d1476eeb03fa99a8ac03e45dd06e8'
 
 const cotacao = (symbol, callback) => {
-
-    const url = `https://www.worldtradingdata.com/api/v1/stock?symbol=${symbol}&api_token=${api_token}`
+    const url = `http://api.marketstack.com/v1/tickers/${symbol}/eod?access_key=${api_token}`;
 
     request({ url: url, json: true }, (err, response) => {
         if (err) {
@@ -13,21 +12,22 @@ const cotacao = (symbol, callback) => {
                 code : 500
             }, undefined);
         }
-
-        if (response.body === undefined || response.body.data === undefined) {
+        else if (response.body === undefined || response.body.data === undefined) {
             callback({
                 message: 'No data found',
                 code : 404
             }, undefined);
         }
-
-        const parsedJSON = response.body.data[0];
-        console.log(parsedJSON);
-        const { symbol, name, currency, price_open, price, day_high, day_low } = parsedJSON
-
-        const data = { symbol, name, currency, price_open, price, day_high, day_low }
-
-        callback(undefined, data);
+        else {
+            const parsedSymbolJSON = response.body.data;
+            const parsedEoDJSON = response.body.data.eod[0];
+            const { symbol, name } = parsedSymbolJSON;
+            const { exchange, open, close, high, low } = parsedEoDJSON;
+    
+            const data = { symbol, name, exchange, open, close, high, low }
+            console.log(data);
+            callback(undefined, data);
+        }
     })
 }
 
